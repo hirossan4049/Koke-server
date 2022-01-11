@@ -1,5 +1,6 @@
 from tinydb import TinyDB, Query
 from time import time
+from pprint import pprint # debug
 
 from model import Track, TrackLists
 
@@ -48,6 +49,8 @@ class DB():
         try:
             #return self.db.all()[(page*get_count):(page*get_count+get_count)]
             datas = self.db.all()
+            pprint(datas)
+            print("======================")
             ids = list(set([e["trackId"] for e in datas]))[(page*get_count):(page*get_count+get_count)]
             # FIXME: 適当
             result = []

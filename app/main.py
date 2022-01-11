@@ -5,11 +5,13 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from model import Track, Tracklists
+from model import Track, TrackLists
+from db import DB
 
 #from dataclasses_json import dataclass_json
 
 app = FastAPI()
+db = DB()
 
 app.add_middleware(
     CORSMiddleware,
@@ -33,7 +35,8 @@ async def get_latest_tracklists():
         TrackLists(trackId="", trackName="", tracks=[]),
         TrackLists(trackId="", trackName="", tracks=[]),
     ]
-    return JSONResponse(content=jsonable_encoder(tl))
+    return JSONResponse(content=jsonable_encoder(db.get_latest()))
+    #return JSONResponse(content=jsonable_encoder(tl))
 
 @app.get("/tracklists/{trackId}")
 async def get_tracklists(trackId: str):
@@ -64,6 +67,10 @@ async def get_tracklists(trackId: str):
         tl = TrackLists(trackId="zbqSOzLE8YI", trackName="【LIVE】ひきこもりでもLIVEがしたい！～すーぱーまふまふわーるど2021＠東京ドーム～ONLINE", tracks=tracks)
         return JSONResponse(content=jsonable_encoder(tl))
 
+    data = db.get(trackId)
+    print(data)
+    return JSONResponse(content=jsonable_encoder(data))
+
     tracks = [
             Track(name="Vintage Culture - Free (feat. Fancy Inc & Roland Clark)", time=1), 
             Track(name=" Sofi Tukker - Drinkee (Vintage Culture & John Summit Remix)", time=418),
@@ -77,7 +84,9 @@ async def get_tracklists(trackId: str):
 
 @app.post("/tracklists/update/{trackId}")
 async def post_update_tracklists(trackId: str, tracklists: TrackLists):
-    return {"status": "fail"}
+    db.set(tracklists)
+    print(tracklists)
+    return {"status": "success"}
 
 
 if __name__ == "__main__":
