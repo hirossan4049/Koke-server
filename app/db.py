@@ -2,7 +2,7 @@ from tinydb import TinyDB, Query
 from time import time
 from pprint import pprint # debug
 
-from model import Track, TrackLists
+from app.model import Track, TrackLists
 
 class DB():
     def __init__(self):

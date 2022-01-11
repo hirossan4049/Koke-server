@@ -5,8 +5,8 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from model import Track, TrackLists
-from db import DB
+from app.model import Track, TrackLists
+from app.db import DB
 
 #from dataclasses_json import dataclass_json
 
