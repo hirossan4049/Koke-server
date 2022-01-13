@@ -62,11 +62,16 @@ class DB():
         except IndexError:
             return []
 
-
-
-    def delete(self, trackId, update_at):
+    def delete(self, trackId):
         que = Query()                                           
-        self.db.remove(que.trackId == trackId and que.update_at == update_at)
+        data = self.db.search(que.trackId == trackId)[-1]
+        print(data)
+        self.db.remove(que["update_at"] == data["update_at"])
+
+    def deleteAll(self, trackId):
+        que = Query()                                           
+        self.db.remove(que.trackId == trackId)
+
 
     def update(self, trackId):
         pass         
