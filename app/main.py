@@ -1,5 +1,4 @@
 import os
-from uuid import uuid4
 
 from fastapi import FastAPI
 from fastapi.encoders import jsonable_encoder
@@ -10,9 +9,10 @@ from app.model import Track, TrackLists
 from app.db import DB
 
 print("SVARA_PASS =================")
-SVARA_PASS = uuid4().hex
-os.environ["SVARA_PASS"] = SVARA_PASS
-print(SVARA_PASS)
+if SVARA_PASS := os.environ.get("SVARA_PASS"):
+    print(SVARA_PASS)
+else:
+    print("$SVARA_PASS をセットしてください。")
 print("============================")
 
 app = FastAPI()
