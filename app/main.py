@@ -3,6 +3,7 @@ import os
 from fastapi import FastAPI
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
+from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.model import Track, TrackLists
@@ -26,6 +27,22 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
+
+@app.get("/")
+async def root(response_class=HTMLResponse):
+    return HTMLResponse(content="""
+<html>
+<head><title>omg!</title></head>
+<body>
+<script type="text/javascript">
+(async function() {
+    const joke = await fetch("https://icanhazdadjoke.com/", {headers: {Accept: "text/plain"}})
+    document.body.innerText = await joke.text()
+})()
+</script>
+</body>
+</html>
+""", status_code=200)
 
 @app.get("/latest-tracklists")
 async def get_latest_tracklists():
